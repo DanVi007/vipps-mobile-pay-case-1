@@ -1,7 +1,7 @@
 package main
 
 import (
-	constants "backend"
+	"backend/constants"
 	"backend/handlers"
 	"log"
 	"net/http"
@@ -9,13 +9,14 @@ import (
 )
 
 func main() {
-	http.HandleFunc(constants.TOPIC_COUNT_PATH, handlers.TopicCounterHandler)
-	http.HandleFunc(constants.TOPIC_COUNT_PATH+"/", handlers.TopicCounterHandler)
+	http.HandleFunc(constants.TOPIC_COUNTER_PATH, handlers.TopicCounterHandler)
+	http.HandleFunc(constants.TOPIC_COUNTER_PATH+"/", handlers.TopicCounterHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Println("No PORT environment variable detected, defaulting to 8080")
-		port = "8080"
+		defaultPort := "8080"
+		log.Println("No PORT environment variable detected, defaulting to " + defaultPort)
+		port = defaultPort
 	}
 
 	log.Println("Starting server on port " + port)
