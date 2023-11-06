@@ -4,7 +4,6 @@ import (
 	"backend/constants"
 	"backend/structs"
 	"encoding/json"
-	"io"
 	"log"
 	"net/http"
 )
@@ -36,7 +35,19 @@ func getAmountOfTopicInArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response, err := http.Get(constants.EXTERNAL_TOPIC_ARTICLE_API + topic)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", constants.EXTERNAL_TOPIC_ARTICLE_API, nil)
+	if err != nil {
+		log.Println("could not create request: " + err.Error())
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	query := req.URL.Query()
+	query.Add(constants.EXTERNAL_TOPIC_ARTICLE_API_PARAM, topic)
+
+	req.URL.RawQuery = query.Encode()
+
+	response, err := client.Do(req)
 	if err != nil {
 		errMsg := "could not get article from external api: "
 		log.Println(errMsg + err.Error())
@@ -44,23 +55,15 @@ func getAmountOfTopicInArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseBody, err := io.ReadAll(response.Body)
-
-	if err != nil {
-		errMsg := "could not read response body: "
-		log.Println(errMsg + err.Error())
-		http.Error(w, errMsg, http.StatusInternalServerError)
-		return
-	}
-
 	var articleResponse structs.WikipediaArticleResponse
-	err = json.Unmarshal(responseBody, &articleResponse)
+
+	err = json.NewDecoder(response.Body).Decode(&articleResponse)
 	if err != nil {
 		log.Println("could not unmarshal response body: " + err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
-	log.Println(articleResponse.Parse.Text)
+	log.Println(articleResponse.Parse.Text.Asterisk)
 
 }

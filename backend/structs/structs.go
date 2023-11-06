@@ -5,7 +5,7 @@ type WikipediaArticleResponse struct {
 		Title  string `json:"title"`
 		Pageid int    `json:"pageid"`
 		Text   struct {
-			Asterisk interface{} `json:"*"`
+			Asterisk string `json:"*"`
 		} `json:"text"`
 	}
 }
