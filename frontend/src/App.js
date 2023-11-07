@@ -13,7 +13,6 @@ function App() {
         try {
             const response = await backendApi.get("/topic_counter?topic=" + topic);
             if (response.data !== null) {
-                console.log(response.data)
                 setTopicCount(response.data)
             } else {
                 console.error("Failed to fetch data from the API");
