@@ -4,8 +4,12 @@ import (
 	"backend/constants"
 	"backend/structs"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"strings"
+
+	"github.com/k3a/html2text"
 )
 
 func TopicCounterHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,6 +31,7 @@ func TopicCounterHandler(w http.ResponseWriter, r *http.Request) {
 // 200 OK
 // 5
 func getAmountOfTopicInArticle(w http.ResponseWriter, r *http.Request) {
+	// retrieve topic from query parameter
 	queryValues := r.URL.Query()
 	topic := queryValues.Get("topic")
 	if topic == "" {
@@ -35,6 +40,7 @@ func getAmountOfTopicInArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// get article from external api
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", constants.EXTERNAL_TOPIC_ARTICLE_API, nil)
 	if err != nil {
@@ -55,15 +61,31 @@ func getAmountOfTopicInArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// decode response into struct
 	var articleResponse structs.WikipediaArticleResponse
 
 	err = json.NewDecoder(response.Body).Decode(&articleResponse)
+	defer response.Body.Close()
 	if err != nil {
 		log.Println("could not unmarshal response body: " + err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
-	log.Println(articleResponse.Parse.Text.Asterisk)
+	// decode html article into plain text
+	htmlArticle := articleResponse.Parse.Text.Asterisk
 
+	articleInPlainText := html2text.HTML2Text(htmlArticle)
+
+	// count amount of times topic appears in article plain text
+	// TODO: do count when capital letters are insensitive
+	count := strings.Count(articleInPlainText, topic)
+
+	// write to user
+	_, err = fmt.Fprint(w, count)
+	if err != nil {
+		log.Println("could not write response: " + err.Error())
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
 }
