@@ -5,9 +5,13 @@ function App() {
     const [topicCount, setTopicCount] = useState(0);
     const [topic, setTopic] = useState("");
 
+    const backendApi = axios.create({
+        baseURL:"http://localhost:8080"
+    });
+
     const fetchTopicCountFromApi = async () => {
         try {
-            const response = await axios.get("/topic_counter?topic=" + topic)
+            const response = await backendApi.get("/topic_counter?topic=" + topic);
             if (response.data !== null) {
                 console.log(response.data)
                 setTopicCount(response.data)

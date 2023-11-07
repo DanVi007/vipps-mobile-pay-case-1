@@ -13,6 +13,8 @@ import (
 )
 
 func TopicCounterHandler(w http.ResponseWriter, r *http.Request) {
+	// simple enabling of cors to frontend
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	switch r.Method {
 	case http.MethodGet:
 		getAmountOfTopicInArticle(w, r)
