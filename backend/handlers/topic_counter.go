@@ -33,6 +33,8 @@ func TopicCounterHandler(w http.ResponseWriter, r *http.Request) {
 // example response:
 // 200 OK
 // 5
+//
+// The search is case sensitive and will not only count full words.
 func getAmountOfTopicInArticle(w http.ResponseWriter, r *http.Request) {
 	// retrieve topic from query parameter
 	queryValues := r.URL.Query()
