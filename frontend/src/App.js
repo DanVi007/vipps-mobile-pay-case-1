@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 function App() {
@@ -8,21 +8,21 @@ function App() {
     const fetchTopicCountFromApi = async () => {
         try {
             const response = await axios.get("/topic_counter?topic=" + topic)
-            if (response.data !== null){
+            if (response.data !== null) {
                 console.log(response.data)
                 setTopicCount(response.data)
             } else {
                 console.error("Failed to fetch data from the API");
             }
-        } catch(error) {
+        } catch (error) {
             console.error("An error occurred while fetching data: ", error);
         }
-        
+
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if(topic !== "" && topic.length !== 0 && /\S/.test(topic)){
+        if (topic !== "" && topic.length !== 0 && /\S/.test(topic)) {
             fetchTopicCountFromApi();
         }
     }
