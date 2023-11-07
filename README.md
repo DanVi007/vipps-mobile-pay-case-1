@@ -18,8 +18,8 @@ For both parts, use any language or framework that you’d like.
 I have decided to use a go backend and a react frontend.
 
 
-## To run the project
-The entire project is dockerized so to run simple type:
+## To build run the project
+The entire project is dockerized so to build simply type:
 ```bash
 docker compose up
 ```
@@ -28,4 +28,7 @@ or
 docker-compose up
 ```
 
-sudo might be needed if it does not work
+sudo might be needed if it does not work.
+
+The frontend will run on http://localhost:3000
+The backend will run on http://localhost:8080
