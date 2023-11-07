@@ -8,6 +8,9 @@ import (
 	"os"
 )
 
+// main function and entry point for application
+// handler paths are defined here
+// server port is defined here
 func main() {
 	http.HandleFunc(constants.TOPIC_COUNTER_PATH, handlers.TopicCounterHandler)
 	http.HandleFunc(constants.TOPIC_COUNTER_PATH+"/", handlers.TopicCounterHandler)

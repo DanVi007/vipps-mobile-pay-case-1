@@ -35,7 +35,8 @@ function App() {
         <div className="mainPage" >
             <h1>Vipps MobilePay</h1>
             <div className="container">
-                <div className="content" >
+                <div className=
+                "content" >
                     <form id="topicForm" onSubmit={handleSubmit}>
                         <label for="topic"><b>Topic: </b></label>
                         <input type="text" id="topic" name="topic" value={topic} onChange={(e) => setTopic(e.target.value)} />

@@ -12,6 +12,7 @@ import (
 	"github.com/k3a/html2text"
 )
 
+// Handler for /topic_counter
 func TopicCounterHandler(w http.ResponseWriter, r *http.Request) {
 	// simple enabling of cors to frontend
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
@@ -80,7 +81,6 @@ func getAmountOfTopicInArticle(w http.ResponseWriter, r *http.Request) {
 	articleInPlainText := html2text.HTML2Text(htmlArticle)
 
 	// count amount of times topic appears in article plain text
-	// TODO: do count when capital letters are insensitive
 	count := strings.Count(articleInPlainText, topic)
 
 	// write to user
