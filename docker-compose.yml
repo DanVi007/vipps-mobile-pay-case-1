@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   # Create frontend container
@@ -9,9 +9,9 @@ services:
     container_name: frontend-docker
     restart: unless-stopped # What to do if container crashes
     links:
-      - backend  # Create backend container
+      - backend # Create backend container
   backend:
-    # Create backend container  
+    # Create backend container
     build: ./backend
     ports:
       - "8080:8080"
