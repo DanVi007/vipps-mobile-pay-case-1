@@ -1,12 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import './App.css'
 
 function App() {
     const [topicCount, setTopicCount] = useState(0);
     const [topic, setTopic] = useState("");
 
     const backendApi = axios.create({
-        baseURL:"http://localhost:8080"
+        baseURL: "http://localhost:8080"
     });
 
     const fetchTopicCountFromApi = async () => {
@@ -31,12 +32,17 @@ function App() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label for="topic">Topic: </label>
-                <input type="text" id="topic" name="topic" value={topic} onChange={(e) => setTopic(e.target.value)} />
-            </form>
-            <p>Amount of times topic is mentioned in article: {topicCount}</p>
+        <div className="mainPage" >
+            <h1>Vipps MobilePay</h1>
+            <div className="container">
+                <div className="content" >
+                    <form id="topicForm" onSubmit={handleSubmit}>
+                        <label for="topic"><b>Topic: </b></label>
+                        <input type="text" id="topic" name="topic" value={topic} onChange={(e) => setTopic(e.target.value)} />
+                    </form>
+                    <p><b>Amount of times topic is mentioned in article: </b>{topicCount}</p>
+                </div>
+            </div>
         </div>
     )
 }
